@@ -27,13 +27,13 @@ struct Tile: View {
     func getTileColor(type: GridType) -> Color {
         switch type {
         case .normal:
-            return Color.black
+            return Color.clear
         case .snake:
             return Color.green
         case .head:
             return Color.red
         default:
-            return Color.black
+            return Color.clear
         }
     }
     

@@ -30,7 +30,7 @@ struct GridRow: View {
             ForEach(self.tiles) { tile in
                 Tile(gridType: tile.type)
                     .frame(width: 30, height: 30, alignment: .center)
-                    .background(Color.black)
+                    .background(Color.clear)
             }
         }
 

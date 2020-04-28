@@ -13,6 +13,7 @@
 		CE4618C32456F39900F10E2E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE4618C22456F39900F10E2E /* Preview Assets.xcassets */; };
 		CE4618C62456F39900F10E2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4618C42456F39900F10E2E /* Main.storyboard */; };
 		CE4618CF2456F46B00F10E2E /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4618CE2456F46B00F10E2E /* Tile.swift */; };
+		CE917363245896A500812247 /* AlgorithmInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE917362245896A500812247 /* AlgorithmInput.swift */; };
 		CECB986E2456F6B100919CA0 /* GridRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB986D2456F6B100919CA0 /* GridRow.swift */; };
 		CEDCD2412456FF2B004C9312 /* SnakeGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDCD2402456FF2B004C9312 /* SnakeGridViewModel.swift */; };
 		CEDCD243245702BE004C9312 /* SnakeGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDCD242245702BE004C9312 /* SnakeGame.swift */; };
@@ -31,6 +32,7 @@
 		CE4618C72456F39900F10E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE4618C82456F39900F10E2E /* SnakeGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnakeGame.entitlements; sourceTree = "<group>"; };
 		CE4618CE2456F46B00F10E2E /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
+		CE917362245896A500812247 /* AlgorithmInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmInput.swift; sourceTree = "<group>"; };
 		CECB986D2456F6B100919CA0 /* GridRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridRow.swift; sourceTree = "<group>"; };
 		CEDCD2402456FF2B004C9312 /* SnakeGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeGridViewModel.swift; sourceTree = "<group>"; };
 		CEDCD242245702BE004C9312 /* SnakeGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeGame.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				CEE43A0B245729BB00FEB360 /* InputSource.swift */,
 				CEE43A0D24572AFE00FEB360 /* RandomInput.swift */,
 				CEE43A0F2457458400FEB360 /* UserInput.swift */,
+				CE917362245896A500812247 /* AlgorithmInput.swift */,
 				CE4618BF2456F39900F10E2E /* Assets.xcassets */,
 				CE4618C42456F39900F10E2E /* Main.storyboard */,
 				CE4618C72456F39900F10E2E /* Info.plist */,
@@ -170,6 +173,7 @@
 				CE4618CF2456F46B00F10E2E /* Tile.swift in Sources */,
 				CECB986E2456F6B100919CA0 /* GridRow.swift in Sources */,
 				CE4618BE2456F39800F10E2E /* SnakeGridView.swift in Sources */,
+				CE917363245896A500812247 /* AlgorithmInput.swift in Sources */,
 				CEDCD2412456FF2B004C9312 /* SnakeGridViewModel.swift in Sources */,
 				CEE43A0E24572AFE00FEB360 /* RandomInput.swift in Sources */,
 				CE4618BC2456F39800F10E2E /* AppDelegate.swift in Sources */,

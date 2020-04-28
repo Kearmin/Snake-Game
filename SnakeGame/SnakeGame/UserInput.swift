@@ -12,6 +12,7 @@ import AppKit
 class UserInput: NSResponder, InputSource {
     
     var currentDirection = Direction.up
+    var firstInput = false
     
     override init() {
         super.init()
@@ -45,15 +46,15 @@ class UserInput: NSResponder, InputSource {
                 self.currentDirection = .up
             }
         }
+        firstInput = true
         return event
     }
     
     func getNextInput(matrix: [[GameGrid]], snake: [MatrixCoordinate], completion: @escaping (Direction) -> Void) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now()){
+        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 0.1 ){
             completion(self.currentDirection)
         }
-        
     }
 }
 
