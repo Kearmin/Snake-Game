@@ -38,9 +38,3 @@ struct Tile: View {
     }
     
 }
-
-struct Tile_Previews: PreviewProvider {
-    static var previews: some View {
-        Tile(gridType: .normal)
-    }
-}

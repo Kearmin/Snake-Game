@@ -31,19 +31,16 @@ struct SnakeGridView: View {
                     .bold()
                     .font(.system(size: 55))
                     .foregroundColor(.white)
-                    Text("SCORE: \(self.viewModel.points)")
+                Text("Steps: \(self.viewModel.steps)")
+                    .bold()
+                    .font(.system(size: 40))
+                    .foregroundColor(.white)
+                    Text("Length: \(self.viewModel.snakeLength)")
                     .bold()
                     .font(.system(size: 40))
                     .foregroundColor(.white)
                 }
             }
         }
-    }
-}
-
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        SnakeGridView(viewModel: SnakeGridViewModel())
     }
 }

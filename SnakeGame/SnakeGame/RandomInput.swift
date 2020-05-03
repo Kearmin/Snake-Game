@@ -10,7 +10,7 @@ import Foundation
 
 class RandomInput: InputSource {
     
-    func getNextInput(matrix: [[GameGrid]], snake: [MatrixCoordinate], completion: @escaping (Direction) -> Void) {
+    func getNextInput(snake: [MatrixCoordinate], food: MatrixCoordinate, completion: @escaping (Direction) -> Void) {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             

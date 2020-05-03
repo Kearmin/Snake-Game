@@ -36,9 +36,3 @@ struct GridRow: View {
 
     }
 }
-
-struct GridRow_Previews: PreviewProvider {
-    static var previews: some View {
-        GridRow(tiles: [])
-    }
-}

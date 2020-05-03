@@ -9,5 +9,5 @@
 import Foundation
 
 protocol InputSource {
-    func getNextInput(matrix: [[GameGrid]], snake: [MatrixCoordinate], completion: @escaping (Direction) -> Void)
+    func getNextInput(snake: [MatrixCoordinate], food: MatrixCoordinate, completion: @escaping (Direction) -> Void)
 }

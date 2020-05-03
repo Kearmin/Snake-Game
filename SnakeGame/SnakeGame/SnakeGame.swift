@@ -8,11 +8,32 @@
 
 import Foundation
 
-enum Direction: Int {
+enum Direction: Int,CaseIterable {
     case up = 0
     case down = 1
     case right = 2
     case left = 3
+    
+    static var allTypes: [Direction] = [.up,.down,.right,.left]
+    
+    static func random() -> Direction {
+        
+        return Direction(rawValue: Int.random(in: 0...3))!
+    }
+    
+    func getOpposite() -> Direction {
+        
+        switch self {
+        case .down:
+            return .up
+        case .up:
+            return .down
+        case .left:
+            return .right
+        case .right:
+            return .left
+        }
+    }
 }
 
 enum GameState {
@@ -23,7 +44,9 @@ enum GameState {
     case wrongInputGenerated
 }
 
-struct MatrixCoordinate: Comparable {
+class MatrixCoordinate: Equatable {
+
+    
     let x: Int
     let y: Int
     
@@ -37,8 +60,22 @@ struct MatrixCoordinate: Comparable {
         self.y = Int.random(in: 0..<topBound)
     }
     
-    static func < (lhs: MatrixCoordinate, rhs: MatrixCoordinate) -> Bool {
+    static func == (lhs: MatrixCoordinate, rhs: MatrixCoordinate) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+    
+    func getNeighbour(direction: Direction) -> MatrixCoordinate {
+        
+        switch direction {
+        case .up:
+            return MatrixCoordinate(x: self.x - 1, y: self.y)
+        case .down:
+            return MatrixCoordinate(x: self.x + 1, y: self.y)
+        case .left:
+            return MatrixCoordinate(x: self.x, y: self.y - 1)
+        case .right:
+            return MatrixCoordinate(x: self.x, y: self.y + 1)
+        }
     }
     
     static func isNeighbour(lhs: MatrixCoordinate, rhs: MatrixCoordinate) -> Bool {
@@ -74,9 +111,9 @@ class GameGrid {
 
 class PointCalculator {
     
-    var currentPoints: Int
+    private(set) var currentPoints: Int
     private let foodStarterDistance: Int
-    private var stepsTaken: Int
+    private(set) var stepsTaken: Int
     private let penaltyPerStep: Int
     
     init(foodPosition: MatrixCoordinate, headPosition: MatrixCoordinate) {
@@ -111,21 +148,25 @@ class SnakeGame {
     var pointsCalculator: PointCalculator?
     var totalPoints: Int
     
+    var steps = 0
+    
     let inputSource: InputSource
     var viewModel: SnakeGridViewModel
     
-    private let gameSize = 12
+    private let gameSize: Int
     
-    init(inputSource: InputSource, viewModel: SnakeGridViewModel) {
+    init(inputSource: InputSource, gameSize: Int, viewModel: SnakeGridViewModel) {
         self.tiles = []
         self.snake = []
         self.food = MatrixCoordinate(topBound: gameSize)
         self.totalPoints = 0
+        self.gameSize = gameSize
         
         self.inputSource = inputSource
         self.viewModel = viewModel
         
         self.setupGame()
+        self.viewModel.update()
         self.getNextStep()
         //self.start()
     }
@@ -133,9 +174,9 @@ class SnakeGame {
     private func setupGame() {
         
         //initialize matrix
-        for i in 0...gameSize {
+        for i in 0..<gameSize {
             tiles.append([])
-            for _ in 0...gameSize {
+            for _ in 0..<gameSize {
                 tiles[i].append(.init())
             }
         }
@@ -158,6 +199,7 @@ class SnakeGame {
     private func calculatePoints() {
         
         self.totalPoints += self.pointsCalculator?.currentPoints ?? 0
+        self.steps += self.pointsCalculator?.stepsTaken ?? 0
         self.pointsCalculator = PointCalculator(foodPosition: self.food, headPosition: self.snake.first!)
         print(totalPoints)
     }
@@ -205,7 +247,7 @@ class SnakeGame {
     
     private func getNextStep() {
         DispatchQueue.global(qos: .userInteractive).async {
-            self.inputSource.getNextInput(matrix: self.tiles, snake: self.snake) { direction in
+            self.inputSource.getNextInput(snake: self.snake, food: self.food) { direction in
                 
                 let inputResult = self.evaluateInput(direction: direction)
                 
@@ -239,13 +281,15 @@ class SnakeGame {
         self.viewModel.gameOver()
         print("GAME OVER")
         print("TOTAL POINTS: \(self.totalPoints)")
+        print("SNAKE LENGTH: \(self.snake.count)")
+        print("STEPS TAKEN: \(self.steps)")
     }
     
     private func randomSnakeStart(foodPosition: MatrixCoordinate) -> (MatrixCoordinate,MatrixCoordinate) {
-        //var head = MatrixCoordinate(topBound: gameSize)
-        //var tail = MatrixCoordinate(topBound:gameSize)
-        var head = MatrixCoordinate(x: 10, y: 6)
-        var tail = MatrixCoordinate(x:10, y: 7)
+        var head = MatrixCoordinate(topBound: gameSize)
+        var tail = MatrixCoordinate(topBound:gameSize)
+//        var head = MatrixCoordinate(x: 10, y: 6)
+//        var tail = MatrixCoordinate(x:10, y: 7)
         
         while head == foodPosition || tail == foodPosition || MatrixCoordinate.isNeighbour(lhs: head, rhs: tail) == false {
             head = MatrixCoordinate(topBound: gameSize)
@@ -279,7 +323,7 @@ class SnakeGame {
             return .foodEaten(newHead: newHead)
         } else if self.snake.contains(newHead) {
             return .hitSnake
-        } else if newHead.x > self.gameSize || newHead.y > self.gameSize || newHead.x < 0 || newHead.y < 0 {
+        } else if newHead.x >= self.gameSize || newHead.y >= self.gameSize || newHead.x < 0 || newHead.y < 0 {
             return .hitWall
         } else {
             return .normal(newHead: newHead)

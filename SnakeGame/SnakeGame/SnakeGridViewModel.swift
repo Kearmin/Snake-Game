@@ -13,7 +13,8 @@ class SnakeGridViewModel: ObservableObject {
     
     @Published var gridRows: [GridRows] = []
     @Published var isGameOver = false
-    @Published var points = 0
+    @Published var steps = 0
+    @Published var snakeLength = 0
     
     var lastSavedGrid: [GridRows] = []
     weak var game: SnakeGame?
@@ -25,7 +26,8 @@ class SnakeGridViewModel: ObservableObject {
     func gameOver(){
         DispatchQueue.main.async {
             self.isGameOver = true
-            self.gridRows = self.game?.translateToViewContent() ?? self.lastSavedGrid
+            //self.gridRows = self.game?.translateToViewContent() ?? self.lastSavedGrid
+            self.update()
         }
     }
     
@@ -36,9 +38,13 @@ class SnakeGridViewModel: ObservableObject {
                 self.lastSavedGrid = rows
             }
             self.gridRows = self.game?.translateToViewContent() ?? self.lastSavedGrid
-            let points = self.game?.getPoints() ?? 0
-            if points > self.points {
-                self.points = points
+            let steps = self.game?.steps ?? 0
+            if steps > self.steps {
+                self.steps = steps
+            }
+            let snakeLength = self.game?.snake.count ?? 0
+            if snakeLength > self.snakeLength {
+                self.snakeLength = snakeLength
             }
         }
     }

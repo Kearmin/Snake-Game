@@ -50,9 +50,9 @@ class UserInput: NSResponder, InputSource {
         return event
     }
     
-    func getNextInput(matrix: [[GameGrid]], snake: [MatrixCoordinate], completion: @escaping (Direction) -> Void) {
+    func getNextInput(snake: [MatrixCoordinate], food: MatrixCoordinate, completion: @escaping (Direction) -> Void) {
         
-        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 0.1 ){
+        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 0.15 ){
             completion(self.currentDirection)
         }
     }
