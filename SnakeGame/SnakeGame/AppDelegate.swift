@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Create the SwiftUI view that provides the window contents.
         let viewModel = SnakeGridViewModel()
-        let snakeGame = SnakeGame(inputSource: AlgorithmInput(gameSize: 10), gameSize: 10, viewModel: viewModel)
+        let snakeGame = SnakeGame(inputSource: AlgorithmInput(gameSize: 8), gameSize: 8, viewModel: viewModel)
         //let snakeGame = SnakeGame(inputSource: UserInput(), gameSize: 8, viewModel: viewModel)
         viewModel.game = snakeGame
         let contentView = SnakeGridView(viewModel: viewModel)

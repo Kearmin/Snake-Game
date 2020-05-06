@@ -45,10 +45,10 @@ class AlgorithmInput: InputSource {
     var directionQueue = [Direction]()
     var gameSize: Int
     
-    private let asyncDelay = 0.1
+    private let asyncDelay = 0.25
     
     
-    private let numberOfNodes = 1000000
+    private let numberOfNodes = 500000
     
     //var snakeHeadLastPosition: MatrixCoordinate?
     
