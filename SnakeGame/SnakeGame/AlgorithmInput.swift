@@ -45,10 +45,10 @@ class AlgorithmInput: InputSource {
     var directionQueue = [Direction]()
     var gameSize: Int
     
-    private let asyncDelay = 0.25
+    private let asyncDelay = 0.1
     
     
-    private let numberOfNodes = 500000
+    private let numberOfNodes = 1000000
     
     //var snakeHeadLastPosition: MatrixCoordinate?
     
@@ -62,7 +62,7 @@ class AlgorithmInput: InputSource {
         closedList = (0...self.numberOfNodes).map { _ in Node(coord: MatrixCoordinate(x: 0, y: 0), parent: nil, parentDir: nil) }
         
     }
-    
+        
     func getNextInput(snake: [MatrixCoordinate], food: MatrixCoordinate, completion: @escaping (Direction) -> Void) {
         
         if let lastDirection = directionQueue.popLast() {
@@ -71,7 +71,7 @@ class AlgorithmInput: InputSource {
                 completion(lastDirection)
                 return
             }
-        } else if (self.numberOfNeighbours(node: food, snake: snake) == 3 || self.numberOfNeighbours(node: food, snake: snake) == 4) && self.numberOfNeighbours(node: food, snake: snake, onlySnake: true) > 1{
+        } else if isFoodBoxed(food: food, snake: snake) == true {
             print("FOOD IS BOXED")
             DispatchQueue.global().asyncAfter(deadline: .now() + asyncDelay) {
                 completion(self.panicMove(snake: snake))
@@ -132,10 +132,16 @@ class AlgorithmInput: InputSource {
                     
                     successor.calculateF(parent: q!, dest: food, currentDirection: currentDirection)
                     
-                    if self.densityOfArea (node: successor, snake: snake) > 0.7 {
-                        successor.f += 100
-                    }
+//                    if self.densityOfArea (node: successor, snake: snake) > 0.7 {
+//                        successor.f += 100
+//                    }
                     
+                    if let parentDir = successor.parentDir {
+                        if self.directionDensity(node: successor, snake: snake, direction: parentDir) > 0.7 {
+                            successor.f += 80
+                        }
+                    }
+                
                     //ii
                     if isLowestValue(successor: successor, in: openList, size: openListSize) == false {
                         continue
@@ -162,7 +168,7 @@ class AlgorithmInput: InputSource {
                     print("Iterations: \(iterations)")
                 }
                 
-                if iterations % 3500 == 0 {
+                if iterations % 10000 == 0 {
                     break
                 }
             }
@@ -190,6 +196,69 @@ class AlgorithmInput: InputSource {
                 }
             }
         }
+    }
+    
+    
+    func directionDensity(node: Node, snake: [MatrixCoordinate], direction: Direction) -> Double {
+        
+        var iStart = 0
+        var jStart = 0
+        var iEnd = 0
+        var jEnd = 0
+        
+        switch direction {
+        case .up:
+            iStart = node.coord.x
+            jStart = 0
+            iEnd = 0
+            jEnd = gameSize
+        case .left:
+            iStart = 0
+            jStart = node.coord.y
+            iEnd = gameSize
+            jEnd = 0
+        case .down:
+            iStart = node.coord.x
+            jStart = 0
+            iEnd = gameSize
+            jEnd = gameSize
+        case .right:
+            iStart = 0
+            jStart = node.coord.y
+            iEnd = gameSize
+            jEnd = gameSize
+        }
+        
+        var all = 0
+        var snakeCount = 0
+        
+        if iStart > iEnd {
+            swap(&iStart, &iEnd)
+        }
+        
+        if jStart > jEnd {
+            swap(&jStart, &jEnd)
+        }
+        
+        for i in (iStart..<iEnd) {
+            for j in (jStart..<jEnd) {
+                all += 1
+                if snake.contains(MatrixCoordinate(x: i, y: j)) {
+                    snakeCount += 1
+                }
+            }
+        }
+        
+        let result = Double(snakeCount) / Double(all)
+        //print("DENSITYRESULT:: \(result)")
+        return result
+    }
+    
+    
+    
+    private func isFoodBoxed(food: MatrixCoordinate, snake: [MatrixCoordinate]) -> Bool {
+        
+        return (self.numberOfNeighbours(node: food, snake: snake) == 3 || self.numberOfNeighbours(node: food, snake: snake) == 4) && self.numberOfNeighbours(node: food, snake: snake, onlySnake: true) > 1
     }
     
     private func panicMove(snake: [MatrixCoordinate]) -> Direction {

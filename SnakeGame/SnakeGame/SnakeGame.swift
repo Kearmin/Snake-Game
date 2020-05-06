@@ -185,7 +185,7 @@ class SnakeGame {
         let snakeStart = self.randomSnakeStart(foodPosition: self.food)
         
         tiles[self.food.x][self.food.y].type = .food
-        tiles[snakeStart.0.x][snakeStart.0.y].type = .snake
+        tiles[snakeStart.0.x][snakeStart.0.y].type = .head
         tiles[snakeStart.1.x][snakeStart.1.y].type = .snake
         
         //Save snake position

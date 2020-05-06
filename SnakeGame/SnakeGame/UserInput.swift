@@ -25,6 +25,8 @@ class UserInput: NSResponder, InputSource {
     
     func keyDown(with event: NSEvent) -> NSEvent {
         
+        self.firstInput = (self.firstInput == false) ? true : false
+        
         if (event.keyCode == 123){
             //left
             DispatchQueue.main.async {
@@ -53,6 +55,11 @@ class UserInput: NSResponder, InputSource {
     func getNextInput(snake: [MatrixCoordinate], food: MatrixCoordinate, completion: @escaping (Direction) -> Void) {
         
         DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + 0.15 ){
+            
+            while self.firstInput != true {
+                print("")
+            }
+            
             completion(self.currentDirection)
         }
     }
